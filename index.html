@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>衰退度診断チェックリスト</title>
+  <style>
+    body {
+      font-family: "Noto Sans JP", sans-serif;
+      background: #fdf4ff;
+      color: #3b0764;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    h1 {
+      text-align: center;
+      color: #9333ea;
+    }
+    .question {
+      margin: 15px 0;
+      padding: 12px;
+      border: 2px solid #a855f7;
+      border-radius: 12px;
+      background: #fff;
+    }
+    button {
+      margin: 20px auto;
+      padding: 12px 28px;
+      border: none;
+      border-radius: 30px;
+      font-size: 18px;
+      cursor: pointer;
+      background: #a855f7;
+      color: #fff;
+      font-weight: bold;
+      display: block;
+    }
+    #result {
+      margin-top: 30px;
+      text-align: center;
+      padding: 20px;
+      border-radius: 12px;
+      background: #faf5ff;
+      border: 2px solid #c084fc;
+    }
+    .cta-button {
+      display: inline-block;
+      background: #a855f7;
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 40px;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .qr {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🔮 衰退度診断チェックリスト</h1>
+  <p>Yes/Noで答えて、あなたの衰退度をチェックしましょう！</p>
+
+  <form id="quizForm">
+    <div id="questions"></div>
+    <button type="button" onclick="calculate()">診断する</button>
+  </form>
+
+  <div id="result" style="display:none;">
+    <h2>診断結果</h2>
+    <p id="result-text"></p>
+
+    <!-- LINE公式ボタン -->
+    <a href="https://lin.ee/a1Ak9qzw" target="_blank" class="cta-button">
+      💌 もっと詳しく知りたい方はこちら（LINE公式）
+    </a>
+
+    <!-- QRコード（PC用補助） -->
+    <div class="qr">
+      <p>PCでご覧の方はこちらから👇</p>
+      <img src="QRコード画像URL" alt="LINE公式QRコード" width="150">
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      "最近ワクワクや活気を感じなくなっている",
+      "数字（売上・成果・健康数値）が伸びず停滞している",
+      "同じことの繰り返しで新鮮さがない",
+      "人間関係で小さな摩擦や不調和が増えている",
+      "惰性や「まあいいか」で物事を続けている",
+      "やめたいけれど続けている習慣や仕事がある",
+      "疲れる人間関係を無理に保っている",
+      "昔は大事だったけど今は意味を失ったことがある",
+      "「義務感」で続けていることが多い",
+      "最近ちょっとでも興味をひかれたことがある",
+      "新しい人や情報に出会った",
+      "「やってみたいけど先延ばしにしていること」がある",
+      "小さく試してみたいアイデアがある",
+      "衰退＝失敗だと思ってしまう",
+      "うまくいかない経験を「学び」として捉え直せる",
+      "衰退によって「本当に大事なもの」が見えたことがある",
+      "停滞の中で気づきを得た経験がある",
+      "今日からできる「5分の新習慣」がある",
+      "誰かに新しいことを話してみたいと思う",
+      "ちょっとだけ試してみたい行動がある",
+      "過去に小さな行動から流れが変わった経験がある"
+    ];
+
+    const qContainer = document.getElementById("questions");
+    questions.forEach((q, i) => {
+      const div = document.createElement("div");
+      div.classList.add("question");
+      div.innerHTML = `<p>Q${i+1}. ${q}</p>
+        <label><input type="radio" name="q${i}" value="1"> Yes</label>
+        <label><input type="radio" name="q${i}" value="0"> No</label>`;
+      qContainer.appendChild(div);
+    });
+
+    function calculate() {
+      let score = 0;
+      for (let i = 0; i < questions.length; i++) {
+        const answer = document.querySelector(`input[name="q${i}"]:checked`);
+        if (answer) {
+          score += parseInt(answer.value);
+        }
+      }
+
+      let resultText = "";
+      if (score <= 7) {
+        resultText = "🌱 あなたは【再生期】です。\n小さな一歩で繁栄へ向かうタイミング！\n\nもっと詳しく知りたい方はLINE公式からどうぞ👇";
+      } else if (score <= 14) {
+        resultText = "🌿 あなたは【転換期】です。\n手放しと新しい視点で流れが大きく変わる時期！\n\nもっと詳しく知りたい方はLINE公式からどうぞ👇";
+      } else {
+        resultText = "🍂 あなたは【衰退期】です。\n休息と整理、そして外からの刺激が必要なタイミング！\n\nもっと詳しく知りたい方はLINE公式からどうぞ👇";
+      }
+
+      document.getElementById("result-text").innerText = resultText;
+      document.getElementById("result").style.display = "block";
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
